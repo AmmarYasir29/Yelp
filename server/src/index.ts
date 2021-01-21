@@ -1,11 +1,13 @@
 import express from "express";
 import morgan from "morgan";
+let cors = require("cors");
 const app: any = express();
 import { errRes } from "./helper/tools";
 import v1 from "./router";
 
 const port = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 app.use("/v1", v1);

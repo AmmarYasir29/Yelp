@@ -1,6 +1,19 @@
-import React from "react";
-
+import React, { useEffect } from "react";
+import useStore from "../storeState/Manage";
 const Restauran = () => {
+  const { restaurant, setRestaurant } = useStore();
+  useEffect(() => {
+    const warringHandel = async () => {
+      return await fetch("http://localhost:3000/v1/restaurants")
+        .then((result) => result.json())
+        .then((res) => {
+          setRestaurant(res.data);
+        })
+        .catch((err) => console.log(err));
+    };
+    warringHandel();
+  }, []);
+
   return (
     <div className="container mt-4">
       <table className="table table-dark table-hover">
