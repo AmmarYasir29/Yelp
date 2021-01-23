@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import useStore from "../storeState/Manage";
 import { useHistory } from "react-router-dom";
+import { start } from "repl";
+import Start from "./Start";
 
 const Restauran = () => {
   const { restaurant, setRestaurant } = useStore();
@@ -59,8 +61,13 @@ const Restauran = () => {
                 >
                   <th scope="row">{ele.name} </th>
                   <td>{ele.location} </td>
-                  <td>{ele.price} </td>
-                  <td>reviw</td>
+                  <td style={{ color: "green" }}>{"$".repeat(ele.price)} </td>
+                  <td>
+                    <div className="text-warning">
+                      <Start rating={ele.average_rating} />
+                      <span >({ele.count? ele.count :"No Review"})</span>
+                    </div>
+                  </td>
                   <td>
                     <button
                       onClick={(e) => Handleupdate(e, ele.id)}

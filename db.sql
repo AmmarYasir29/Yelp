@@ -28,3 +28,7 @@ create table reviews(
 
 insert into reviews (restaurant_id, email, name, review, address, rating)
 values(11, 'email@email.com', 'ali', 'areview resview revdiew', 'address', 3);
+
+select * from reviews where restaurant_id=11;
+
+select * from restaurants left join (select restaurant_id, count(*),trunc(avg(rating),1) as average_rating from reviews group by restaurant_id) reviews on restaurants.id = reviews.restaurant_id;

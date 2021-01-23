@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 const AddReview = () => {
   const [email, setEmail] = useState("");
@@ -9,6 +9,7 @@ const AddReview = () => {
   const [rating, setRating] = useState("Price Range");
   const { id }: any = useParams();
   const [open, setOpen] = useState(false);
+  const History = useHistory();
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
@@ -35,6 +36,8 @@ const AddReview = () => {
         setOpen(true);
       })
       .catch((error) => console.log("error", error));
+    // History.push("/");
+    // History.push(window.location.pathname);
   };
   return (
     <div>

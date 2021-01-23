@@ -1,6 +1,18 @@
 import { okRes } from "../helper/tools";
 const db = require("../db");
 export default class controller {
+  static async getReview(req: any, res: any) {
+    const { id } = req.params;
+    try {
+      const rows = await db.query(
+        `select * from reviews where restaurant_id=$1;`,
+        [id]
+      );
+      okRes(res, rows);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   static async addReview(req: any, res: any) {
     let body = req.body;
     const { id } = req.params;
@@ -41,13 +53,16 @@ export default class controller {
   }
   static async getRestaurants(req: any, res: any) {
     try {
-      const { rows } = await db.query("SELECT * FROM restaurants");
+      // const { rows } = await db.query("SELECT * FROM restaurants");
+      const { rows } = await db.query(
+        "select * from restaurants left join (select restaurant_id, count(*),trunc(avg(rating),1) as average_rating from reviews group by restaurant_id) reviews on restaurants.id = reviews.restaurant_id;"
+      );
+
       okRes(res, rows, 200);
     } catch (error) {
       console.log(error);
     }
   }
-
   static async Restaurant(req: any, res: any) {
     const { id } = req.params;
     try {
@@ -60,7 +75,6 @@ export default class controller {
       console.log(error);
     }
   }
-
   static async addRestaurants(req: any, res: any) {
     const body = req.body;
     try {

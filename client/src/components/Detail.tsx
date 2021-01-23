@@ -19,7 +19,7 @@ const Detail = () => {
   }, []);
   return (
     <div className="container">
-      {console.log("Restaurant", restaurant)}
+      {/* {console.log("Restaurant", restaurant)} */}
       <h1 className="text-center mt-3">
         What you think about <span>{rest.name}</span> !
       </h1>
