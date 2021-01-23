@@ -1,19 +1,40 @@
 import React, { useEffect } from "react";
 import useStore from "../storeState/Manage";
+import { useHistory } from "react-router-dom";
+
 const Restauran = () => {
   const { restaurant, setRestaurant } = useStore();
+  let History = useHistory();
   useEffect(() => {
     const warringHandel = async () => {
       return await fetch("http://localhost:3000/v1/restaurants")
         .then((result) => result.json())
-        .then((res) => {
-          setRestaurant(res.data);
-        })
+        .then((res) => setRestaurant(res.data))
         .catch((err) => console.log(err));
     };
     warringHandel();
   }, []);
 
+  const handleDelete = (e: any, id: string) => {
+    e.stopPropagation();
+    let requestOptions: any = {
+      method: "DELETE",
+      redirect: "follow",
+    };
+    fetch(`http://localhost:3000/v1/Restaurants/${id}`, requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
+
+    setRestaurant(restaurant.filter((ele: any) => ele.id !== id));
+  };
+  const Handleupdate = (e: any, id: any) => {
+    e.stopPropagation();
+    History.push(`/update/${id}`);
+  };
+  const handledetail = (id: any) => {
+    History.push(`/detail/${id}`);
+  };
   return (
     <div className="container mt-4">
       <table className="table table-dark table-hover">
@@ -28,38 +49,39 @@ const Restauran = () => {
           </tr>
         </thead>
         <tbody>
-          <tr className="pt-2">
-            <th scope="row">KFC</th>
-            <td>Baghdad</td>
-            <td>$$$</td>
-            <td>reviw</td>
-            <td>
-              <button type="button" className="btn btn-warning">
-                Update
-              </button>
-            </td>
-            <td>
-              <button type="button" className="btn btn-danger">
-                Delete
-              </button>
-            </td>
-          </tr>
-          <tr className="pt-2">
-            <th scope="row">saje</th>
-            <td>iraq</td>
-            <td>$$</td>
-            <td>reviw</td>
-            <td>
-              <button type="button" className="btn btn-warning">
-                Update
-              </button>
-            </td>
-            <td>
-              <button type="button" className="btn btn-danger">
-                Delete
-              </button>
-            </td>
-          </tr>
+          {restaurant &&
+            restaurant.map((ele: any) => {
+              return (
+                <tr
+                  className="pt-2"
+                  key={ele.id}
+                  onClick={() => handledetail(ele.id)}
+                >
+                  <th scope="row">{ele.name} </th>
+                  <td>{ele.location} </td>
+                  <td>{ele.price} </td>
+                  <td>reviw</td>
+                  <td>
+                    <button
+                      onClick={(e) => Handleupdate(e, ele.id)}
+                      type="button"
+                      className="btn btn-warning"
+                    >
+                      Update
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      onClick={(e) => handleDelete(e, ele.id)}
+                      type="button"
+                      className="btn btn-danger"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </table>
     </div>
