@@ -6,7 +6,6 @@ import AddReview from "./AddReview";
 
 const Detail = () => {
   const { id }: any = useParams();
-  const { restaurant, setRestaurant } = useStore();
   const [rest, setRest]: any = useState({});
   useEffect(() => {
     const myRequ = () => {
