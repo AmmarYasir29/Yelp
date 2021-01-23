@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import useStore from "../storeState/Manage";
 import { useParams } from "react-router-dom";
 import Review from "./Review";
 import AddReview from "./AddReview";
